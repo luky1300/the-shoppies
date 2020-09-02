@@ -4,6 +4,8 @@ import InputBase from '@material-ui/core/InputBase';
 import Paper from '@material-ui/core/Paper'
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
+import { getMovies } from "../store";
+import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -22,10 +24,11 @@ const useStyles = makeStyles((theme) => ({
       },
   }));
 
-export default function Search() {
+function SearchBar(props) {
     
     const classes = useStyles();
     const [movie, setMovie] = useState("");
+    const getMovies = props.getMovies
     
     return (
         <Paper className={classes.root}>
@@ -35,8 +38,6 @@ export default function Search() {
                 onChange={(e) => { 
                     e.preventDefault();
                     setMovie(e.target.value)
-                    console.log('e.target.value', e.target.value) 
-                    
                     }}  
             />
             <IconButton 
@@ -44,10 +45,25 @@ export default function Search() {
                 className={classes.iconButton}
                 onClick={(e) => { 
                     e.preventDefault()
-                    console.log(movie)    
+                    getMovies(movie)    
                     }} >
                 <SearchIcon />
             </IconButton>
         </Paper>
     )
 } 
+
+const mapStateToProps = (state) => ({
+    places: state.placesToVisit,
+  });
+  
+  const mapDispatchToProps = (dispatch) => ({
+    getMovies: (movie) => dispatch(getMovies(movie)),
+  });
+  
+  const ConnectedSearchBar = connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(SearchBar);
+  
+  export default ConnectedSearchBar;

@@ -5,10 +5,12 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Button from '@material-ui/core/Button';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import { connect } from "react-redux";
 
-export default function SearchResults() {
+
+function SearchResults(props) {
     
-    const movies = ["Movie 1", "Movie 2", "Movie 3", "Movie 4", "Movie 5"]
+    const movies = props.foundMovies
     
     return (
         <Paper> 
@@ -16,9 +18,9 @@ export default function SearchResults() {
             <List >
                 {movies.map((movie) => {
                     return (
-                        <ListItem key={movie}>
+                        <ListItem key={`${movie.imdbID}${movie.Title}`}>
                             <ListItemText>
-                                {movie}
+                                {`${movie.Title} (year ${movie.Year})`}
                             </ListItemText>
                             <Button 
                                 type="submit"
@@ -36,3 +38,14 @@ export default function SearchResults() {
         </Paper>
     )
 }
+
+const mapStateToProps = (state) => ({
+    foundMovies: state.foundMovies,
+  });
+  
+  const ConnectedSearchResults = connect(
+    mapStateToProps
+  )(SearchResults);
+  
+  export default ConnectedSearchResults;
+

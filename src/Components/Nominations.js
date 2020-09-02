@@ -6,10 +6,12 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { connect } from "react-redux";
+import { withdrawMovie } from "../store";
 
 function Nominations(props) {
     
     const nominates = props.nominates;
+    const withdrawMovie = props.withdrawMovie
     
     return (
         <Paper> 
@@ -26,7 +28,7 @@ function Nominations(props) {
                                 endIcon={<DeleteIcon />}
                                 onClick={(e) => { 
                                 e.preventDefault()
-                                console.log(`movie ${movie} will be removed from the list`)    
+                                withdrawMovie(movie)    
                                 }} >
                                 withdraw
                             </Button>
@@ -42,8 +44,13 @@ const mapStateToProps = (state) => ({
     nominates: state.nominates,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+    withdrawMovie: (movie) => dispatch(withdrawMovie(movie)),
+});
+
 const ConnectedNominations = connect(
-mapStateToProps
+mapStateToProps,
+mapDispatchToProps
 )(Nominations);
 
 export default ConnectedNominations;

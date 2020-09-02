@@ -4,6 +4,7 @@ import axios from 'axios';
 
 const FETCH_FOUND_MOVIES = "FETCH_FOUND_MOVIES";
 const NOMINATE_MOVIE = 'NOMINATE_MOVIE';
+const WITHDRAW_MOVIE = 'WITHDRAW_MOVIE';
 
 let initialState = {
     foundMovies: [{Title: 'Placeholder'}],
@@ -24,6 +25,13 @@ export const nominateMovie = (movie) => {
     };
   };
 
+export const withdrawMovie = (movie) => {
+    return {
+        type: WITHDRAW_MOVIE,
+        movie
+    }
+} 
+
 export const getMovies = (movie) => {
 return async (dispatch) => {
     try {
@@ -43,8 +51,12 @@ const reducer = (state = initialState, action) => {
         case FETCH_FOUND_MOVIES:
             return {...state, foundMovies: action.foundMovies};
         case NOMINATE_MOVIE:
-            console.log('there', action.movie)
             return {...state, nominates: [...state.nominates, action.movie]}
+        case WITHDRAW_MOVIE:    
+        let newNominates = state.nominates.filter((movie) => {
+                return (movie.imdbID !== action.movie.imdbID)
+            });
+            return {...state, nominates: newNominates}
         default:
             return state;
     }

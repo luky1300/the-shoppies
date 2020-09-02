@@ -6,11 +6,13 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Button from '@material-ui/core/Button';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import { connect } from "react-redux";
+import { nominateMovie } from "../store";
 
 
 function SearchResults(props) {
     
     const movies = props.foundMovies
+    const nominateMovie = props.nominateMovie
     
     return (
         <Paper> 
@@ -27,7 +29,7 @@ function SearchResults(props) {
                                 endIcon={<ArrowForwardIcon />}
                                 onClick={(e) => { 
                                 e.preventDefault()
-                                console.log(`movie ${movie} will added to the list`)    
+                                nominateMovie(movie)
                                 }} >
                                 Nominate
                             </Button>
@@ -41,11 +43,16 @@ function SearchResults(props) {
 
 const mapStateToProps = (state) => ({
     foundMovies: state.foundMovies,
-  });
-  
-  const ConnectedSearchResults = connect(
-    mapStateToProps
-  )(SearchResults);
-  
-  export default ConnectedSearchResults;
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    nominateMovie: (movie) => dispatch(nominateMovie(movie)),
+});
+
+const ConnectedSearchResults = connect(
+mapStateToProps,
+mapDispatchToProps
+)(SearchResults);
+
+export default ConnectedSearchResults;
 

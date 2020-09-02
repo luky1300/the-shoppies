@@ -5,20 +5,21 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { connect } from "react-redux";
 
-export default function Nominations() {
+function Nominations(props) {
     
-    const movies = ["Movie 1", "Movie 2", "Movie 3", "Movie 4", "Movie 5"]
+    const nominates = props.nominates;
     
     return (
         <Paper> 
             <h5>Nominations</h5>
             <List >
-                {movies.map((movie) => {
+                {nominates.map((movie) => {
                     return (
-                        <ListItem key={movie}>
+                        <ListItem key={`${movie.imdbID}${movie.Title}N`}>
                             <ListItemText>
-                                {movie}
+                                {`${movie.Title} (year ${movie.Year})`}
                             </ListItemText>
                             <Button 
                                 type="submit"
@@ -36,3 +37,14 @@ export default function Nominations() {
         </Paper>
     )
 }
+
+const mapStateToProps = (state) => ({
+    nominates: state.nominates,
+});
+
+const ConnectedNominations = connect(
+mapStateToProps
+)(Nominations);
+
+export default ConnectedNominations;
+

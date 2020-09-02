@@ -45,7 +45,7 @@ function SearchBar(props) {
                 className={classes.iconButton}
                 onClick={(e) => { 
                     e.preventDefault()
-                    getMovies(movie)    
+                    getMovies(movie)
                     }} >
                 <SearchIcon />
             </IconButton>
@@ -57,13 +57,13 @@ const mapStateToProps = (state) => ({
     places: state.placesToVisit,
   });
   
-  const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch) => ({
     getMovies: (movie) => dispatch(getMovies(movie)),
-  });
-  
-  const ConnectedSearchBar = connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(SearchBar);
-  
-  export default ConnectedSearchBar;
+});
+
+const ConnectedSearchBar = connect(
+mapStateToProps,
+mapDispatchToProps
+)(SearchBar);
+
+export default ConnectedSearchBar;

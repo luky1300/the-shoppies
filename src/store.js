@@ -44,9 +44,10 @@ export const getMovies = (movie) => {
 return async (dispatch) => {
     try {
     let response = await axios.get(`http://www.omdbapi.com/?apikey=c1268e3b&s=${movie}`);
-    let movies = response.data.Search;
-    console.log(movies)
-    dispatch(fetchFoundMovies(movies));
+    if (response.data.response) {
+        let movies = response.data.Search;
+        dispatch(fetchFoundMovies(movies));
+    }
     } catch (error) {
     console.log("Error with finding movie", error);
     }
@@ -62,12 +63,10 @@ const reducer = (state = initialState, action) => {
             let nominatesImdbIDs = state.nominates.map((movie) => {
                 return movie.imdbID
             })
-            console.log('nominatesImdbIDs', nominatesImdbIDs)
             fetchedMovies.map(movie => {
                 if (nominatesImdbIDs.indexOf(movie.imdbID) !== -1) movie.disableNominate = true
             })
             }
-            console.log('fetchedMovies', fetchedMovies)
             return {...state, foundMovies: fetchedMovies};
         case NOMINATE_MOVIE:
             return {...state, nominates: [...state.nominates, action.movie]}
@@ -77,11 +76,9 @@ const reducer = (state = initialState, action) => {
             });
             return {...state, nominates: newNominates}
         case DISABLE_NOMINATE:
-            console.log('state.nominates', state.nominates)
             state.nominates.map((movie) => {
                 if (movie.imdbID === action.imdbID) movie.disableNominate = true
             })
-            console.log(state.nominates)
             return {...state}
         default:
             return state;

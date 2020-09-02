@@ -28,7 +28,7 @@ function SearchBar(props) {
     
     const classes = useStyles();
     const [movie, setMovie] = useState("");
-    const getMovies = props.getMovies
+    const getMovies = props.getMovies;
     
     return (
         <Paper className={classes.root}>

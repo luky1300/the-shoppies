@@ -6,13 +6,15 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Button from '@material-ui/core/Button';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import { connect } from "react-redux";
-import { nominateMovie } from "../store";
+import { nominateMovie, disableNominate } from "../store";
 
 
 function SearchResults(props) {
     
     const movies = props.foundMovies
+    const nominates = props.nominates
     const nominateMovie = props.nominateMovie
+    const disableNominate = props.disableNominate
     
     return (
         <Paper> 
@@ -27,9 +29,13 @@ function SearchResults(props) {
                             <Button 
                                 type="submit"
                                 endIcon={<ArrowForwardIcon />}
+                                disabled={movie.disableNominate}
                                 onClick={(e) => { 
                                 e.preventDefault()
-                                nominateMovie(movie)
+                                if (nominates.length < 2) {
+                                    nominateMovie(movie)
+                                    disableNominate(movie.imdbID)
+                                }
                                 }} >
                                 Nominate
                             </Button>
@@ -43,10 +49,12 @@ function SearchResults(props) {
 
 const mapStateToProps = (state) => ({
     foundMovies: state.foundMovies,
+    nominates: state.nominates
 });
 
 const mapDispatchToProps = (dispatch) => ({
     nominateMovie: (movie) => dispatch(nominateMovie(movie)),
+    disableNominate: (imdbID) => dispatch(disableNominate(imdbID)),
 });
 
 const ConnectedSearchResults = connect(

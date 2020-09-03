@@ -28,17 +28,17 @@ function SearchResults(props) {
         <Paper>
         <Alert severity="warning">
         <AlertTitle>{`We did not find any movies with "${movie}"`}</AlertTitle>
-            Try again
+            Try something else
         </Alert> 
         </Paper>
         }
-        {movies && movies.length > 0 &&
+        {movies.length > 0 &&
         <Paper>
             <List >
                 {movies.map((movie) => {
                     return (
                         <ListItem key={`${movie.imdbID}${movie.Title}`}>
-                            <ListItemText>
+                            <ListItemText style={{width: "80%"}}>
                                 <Typography variant="body2">
                                     {`${movie.Title} (year ${movie.Year})`}
                                 </Typography>
@@ -49,13 +49,7 @@ function SearchResults(props) {
                                 disabled={movie.disableNominate || nominates.length >= 5}
                                 onClick={(e) => { 
                                 e.preventDefault()
-                                if (nominates.length < 5) {
-                                    nominateMovie(movie)
-                                } else {
-                                    return (
-                                        <p>Error</p>
-                                    )
-                                }
+                                if (nominates.length < 5) nominateMovie(movie)
                                 }} >
                                 Nominate
                             </Button>

@@ -15,8 +15,8 @@ export default function Footer() {
 
   return (
     <div className={classes.bottomPush}>
-        <Typography>
-        * <a href="https://icons8.com/icon/46684/movie-projector">Movie Projector icon by Icons8</a>
+        <Typography style={{fontSize: "12px"}}>
+        <a href="https://icons8.com/icon/46684/movie-projector">Thank you, Icons8, for the Movie Projector icon</a>
         </Typography>
     </div>
   );

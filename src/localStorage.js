@@ -1,12 +1,15 @@
-export const loadState = () => {
+export const loadState = (initialState) => {
     try {
       const serializedState = localStorage.getItem('state');
       if (serializedState === null) {
         return undefined;
       }
-      return JSON.parse(serializedState);
+      let parsedNominates = JSON.parse(serializedState);
+      initialState.nominates = parsedNominates.nominates;
+
+      return initialState;
     } catch (err) {
-      return undefined;
+      return initialState;
     }
   }; 
 

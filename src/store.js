@@ -64,7 +64,7 @@ const reducer = (state = initialState, action) => {
     switch (action.type) {
         case FETCH_FOUND_MOVIES:
             let fetchedMovies = action.foundMovies;
-            if (state.nominates.length) {
+            if (state.nominates && state.nominates.length) {
                 let nominatesImdbIDs = state.nominates.map((movie) => {
                     return movie.imdbID
                 })
@@ -95,7 +95,7 @@ const reducer = (state = initialState, action) => {
     }
   };
   
-  const persistedState = loadState();
+  const persistedState = loadState(initialState);
 
   const store = createStore(reducer, persistedState, applyMiddleware(thunk));
 

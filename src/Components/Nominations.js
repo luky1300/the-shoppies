@@ -18,15 +18,15 @@ function Nominations(props) {
     return (
         <React.Fragment>
             <Typography variant="h6">
-                Nominations:
+                Nominees:
             </Typography>  
-        {nominates && nominates.length > 0 &&
+        {nominates.length > 0 &&
         <Paper> 
             <List >
                 {nominates.map((movie) => {
                     return (
                         <ListItem key={`${movie.imdbID}${movie.Title}N`}>
-                            <ListItemText>
+                            <ListItemText style={{width: "80%"}}>
                                 <Typography variant="body2" >
                                     {`${movie.Title} (year ${movie.Year})`}
                                 </Typography>
@@ -46,7 +46,7 @@ function Nominations(props) {
             </List>
             {nominates.length >= 5 && 
             <Alert severity="success">
-            <AlertTitle>Yay! You have all nominates in!</AlertTitle>
+            <AlertTitle>Yay! You have all nominees in!</AlertTitle>
                 To add something else withdraw one
             </Alert> 
             }

@@ -35,10 +35,14 @@ function SearchBar(props) {
             <InputBase
                 className={classes.input}
                 placeholder="Movie title"
+                onKeyDown={(e) => {
+                    if (e.keyCode === 13) getMovies(movie)
+                }}
                 onChange={(e) => { 
                     e.preventDefault();
                     setMovie(e.target.value)
-                    }}  
+                    }}
+                
             />
             <IconButton 
                 type="submit"

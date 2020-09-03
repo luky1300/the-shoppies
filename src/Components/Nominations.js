@@ -19,14 +19,15 @@ function Nominations(props) {
         <React.Fragment>
             <Typography variant="h6">
                 Nominations:
-            </Typography>
+            </Typography>  
+        {nominates && nominates.length > 0 &&
         <Paper> 
             <List >
                 {nominates.map((movie) => {
                     return (
                         <ListItem key={`${movie.imdbID}${movie.Title}N`}>
                             <ListItemText>
-                                <Typography variant="body1">
+                                <Typography variant="body2">
                                     {`${movie.Title} (year ${movie.Year})`}
                                 </Typography>
                             </ListItemText>
@@ -43,13 +44,14 @@ function Nominations(props) {
                     );
                 })}
             </List>
-            {nominates.length >= 2 && 
+            {nominates.length >= 5 && 
             <Alert severity="success">
-            <AlertTitle>Hurrah! You have all nominates in!</AlertTitle>
-                If you want to add somebody else you have to withdraw one.
+            <AlertTitle>Yay! You have all nominates in!</AlertTitle>
+                To add something else withdraw one
             </Alert> 
             }
         </Paper>
+        }
         </React.Fragment>
     )
 }

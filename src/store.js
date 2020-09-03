@@ -1,6 +1,7 @@
 import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import axios from 'axios';
+import {saveState, loadState} from './localStorage'
 
 const FETCH_FOUND_MOVIES = "FETCH_FOUND_MOVIES";
 const NOMINATE_MOVIE = 'NOMINATE_MOVIE';
@@ -33,12 +34,10 @@ export const withdrawMovie = (movie) => {
 } 
 
 export const getMovies = (movie) => {
-console.log('here')
 return async (dispatch) => {
     try {
-    let response = await axios.get(`http://www.omdbapi.com/?apikey=c1268e3b&s=${movie}`);
-    console.log('response', response)
-    if (response.data.Response) {
+    let response = await axios.get(`http://www.omdbapi.com/?apikey=c1268e3b&s=${movie}&type=movie`);
+    if (response.data.Response !== "False") {
         let movies = response.data.Search;
         dispatch(fetchFoundMovies(movies));
     }
@@ -54,17 +53,16 @@ const reducer = (state = initialState, action) => {
         case FETCH_FOUND_MOVIES:
             let fetchedMovies = action.foundMovies;
             if (state.nominates.length) {
-            let nominatesImdbIDs = state.nominates.map((movie) => {
-                return movie.imdbID
-            })
-            fetchedMovies.map(movie => {
-                if (nominatesImdbIDs.indexOf(movie.imdbID) !== -1) movie.disableNominate = true
-            })
+                let nominatesImdbIDs = state.nominates.map((movie) => {
+                    return movie.imdbID
+                })
+                fetchedMovies.forEach(movie => {
+                    if (nominatesImdbIDs.indexOf(movie.imdbID) !== -1) movie.disableNominate = true
+                })
             }
-            console.log('fetchedMovies', fetchedMovies)
             return {...state, foundMovies: fetchedMovies};
         case NOMINATE_MOVIE:
-            state.foundMovies.map((movie) => {
+            state.foundMovies.forEach((movie) => {
                 if (movie.imdbID === action.movie.imdbID) movie.disableNominate = true
             })
             return {...state, nominates: [...state.nominates, action.movie]}
@@ -72,15 +70,25 @@ const reducer = (state = initialState, action) => {
             let newNominates = state.nominates.filter((movie) => {
                 return (movie.imdbID !== action.movie.imdbID)
             });
-            state.foundMovies.map((movie) => {
+            if (state.foundMovies) {
+            state.foundMovies.forEach((movie) => {
                 if (movie.imdbID === action.movie.imdbID) movie.disableNominate = false
             })
+            }
             return {...state, nominates: newNominates}
         default:
             return state;
     }
   };
   
-  const store = createStore(reducer, applyMiddleware(thunk));
+  const persistedState = loadState();
+
+  const store = createStore(reducer, persistedState, applyMiddleware(thunk));
+
+  store.subscribe(() => {
+    saveState({
+        nominates: store.getState().nominates
+    });
+  });
   
   export default store;

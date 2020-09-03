@@ -21,6 +21,7 @@ function SearchResults(props) {
             <Typography variant="h6">
                 Movie search result:
             </Typography>
+        {movies && movies.length > 0 &&
         <Paper> 
             <List >
                 {movies.map((movie) => {
@@ -34,10 +35,10 @@ function SearchResults(props) {
                             <Button 
                                 type="submit"
                                 endIcon={<ArrowForwardIcon />}
-                                disabled={movie.disableNominate || nominates.length >= 2}
+                                disabled={movie.disableNominate || nominates.length >= 5}
                                 onClick={(e) => { 
                                 e.preventDefault()
-                                if (nominates.length < 2) {
+                                if (nominates.length < 5) {
                                     nominateMovie(movie)
                                 } else {
                                     return (
@@ -52,6 +53,7 @@ function SearchResults(props) {
                 })}
             </List>
         </Paper>
+        }
     </React.Fragment>
     )
 }

@@ -6,6 +6,7 @@ import SearchBar from './Components/SearchBar'
 import SearchResults from './Components/SearchResults'
 import Nominations from './Components/Nominations'
 import TopBar from './Components/TopBar'
+import Footer from './Components/Footer'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,6 +33,7 @@ function App() {
         <Nominations />
       </Grid>
     </Grid>
+    <Footer />
     </div>
   );
 }

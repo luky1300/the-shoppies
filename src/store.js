@@ -5,7 +5,6 @@ import axios from 'axios';
 const FETCH_FOUND_MOVIES = "FETCH_FOUND_MOVIES";
 const NOMINATE_MOVIE = 'NOMINATE_MOVIE';
 const WITHDRAW_MOVIE = 'WITHDRAW_MOVIE';
-const DISABLE_NOMINATE = 'DISABLE_NOMINATE'
 
 let initialState = {
     foundMovies: [],
@@ -33,18 +32,13 @@ export const withdrawMovie = (movie) => {
     }
 } 
 
-export const disableNominate = (imdbID) => {
-    return {
-        type: DISABLE_NOMINATE,
-        imdbID
-    }
-}
-
 export const getMovies = (movie) => {
+console.log('here')
 return async (dispatch) => {
     try {
     let response = await axios.get(`http://www.omdbapi.com/?apikey=c1268e3b&s=${movie}`);
-    if (response.data.response) {
+    console.log('response', response)
+    if (response.data.Response) {
         let movies = response.data.Search;
         dispatch(fetchFoundMovies(movies));
     }
@@ -67,19 +61,21 @@ const reducer = (state = initialState, action) => {
                 if (nominatesImdbIDs.indexOf(movie.imdbID) !== -1) movie.disableNominate = true
             })
             }
+            console.log('fetchedMovies', fetchedMovies)
             return {...state, foundMovies: fetchedMovies};
         case NOMINATE_MOVIE:
+            state.foundMovies.map((movie) => {
+                if (movie.imdbID === action.movie.imdbID) movie.disableNominate = true
+            })
             return {...state, nominates: [...state.nominates, action.movie]}
         case WITHDRAW_MOVIE:    
             let newNominates = state.nominates.filter((movie) => {
                 return (movie.imdbID !== action.movie.imdbID)
             });
-            return {...state, nominates: newNominates}
-        case DISABLE_NOMINATE:
-            state.nominates.map((movie) => {
-                if (movie.imdbID === action.imdbID) movie.disableNominate = true
+            state.foundMovies.map((movie) => {
+                if (movie.imdbID === action.movie.imdbID) movie.disableNominate = false
             })
-            return {...state}
+            return {...state, nominates: newNominates}
         default:
             return state;
     }

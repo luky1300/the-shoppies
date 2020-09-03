@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import SearchBar from './Components/SearchBar'
 import SearchResults from './Components/SearchResults'
 import Nominations from './Components/Nominations'
+import TopBar from './Components/TopBar'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,6 +20,7 @@ function App() {
 
   return (
     <div className={classes.root}>
+    <TopBar />
     <Grid container spacing={2}>
       <Grid item xs={12}>
         <SearchBar />

@@ -27,7 +27,7 @@ function Nominations(props) {
                     return (
                         <ListItem key={`${movie.imdbID}${movie.Title}N`}>
                             <ListItemText>
-                                <Typography variant="body2">
+                                <Typography variant="body2" >
                                     {`${movie.Title} (year ${movie.Year})`}
                                 </Typography>
                             </ListItemText>

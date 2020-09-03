@@ -12,7 +12,8 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     margin: 50,
-  },
+    height: 400,
+  }
 }));
 
 

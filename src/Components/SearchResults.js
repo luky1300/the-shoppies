@@ -6,6 +6,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Button from '@material-ui/core/Button';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import Typography from '@material-ui/core/Typography';
+import { Alert, AlertTitle } from '@material-ui/lab';
 import { connect } from "react-redux";
 import { nominateMovie } from "../store";
 
@@ -15,14 +16,24 @@ function SearchResults(props) {
     const movies = props.foundMovies
     const nominates = props.nominates
     const nominateMovie = props.nominateMovie
+    const isSearchError = props.isSearchError
+    const movie = props.searchedTitle
     
     return (
         <React.Fragment>
             <Typography variant="h6">
                 Movie search result:
             </Typography>
+        {isSearchError &&
+        <Paper>
+        <Alert severity="warning">
+        <AlertTitle>{`We did not find any movies with "${movie}"`}</AlertTitle>
+            Try again
+        </Alert> 
+        </Paper>
+        }
         {movies && movies.length > 0 &&
-        <Paper> 
+        <Paper>
             <List >
                 {movies.map((movie) => {
                     return (
@@ -60,7 +71,9 @@ function SearchResults(props) {
 
 const mapStateToProps = (state) => ({
     foundMovies: state.foundMovies,
-    nominates: state.nominates
+    nominates: state.nominates,
+    isSearchError: state.isSearchError,
+    searchedTitle: state.searchedTitle
 });
 
 const mapDispatchToProps = (dispatch) => ({

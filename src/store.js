@@ -6,10 +6,13 @@ import {saveState, loadState} from './localStorage'
 const FETCH_FOUND_MOVIES = "FETCH_FOUND_MOVIES";
 const NOMINATE_MOVIE = 'NOMINATE_MOVIE';
 const WITHDRAW_MOVIE = 'WITHDRAW_MOVIE';
+const SEARCH_ERROR = 'SEARCH_ERROR'; 
 
 let initialState = {
     foundMovies: [],
-    nominates: []
+    nominates: [],
+    isSearchError: false,
+    searchedTitle: '',
 }
 
 const fetchFoundMovies = (foundMovies) => {
@@ -33,6 +36,13 @@ export const withdrawMovie = (movie) => {
     }
 } 
 
+const errorSearch = (movie) => {
+    return {
+        type: SEARCH_ERROR,
+        movie
+    }
+}
+
 export const getMovies = (movie) => {
 return async (dispatch) => {
     try {
@@ -40,6 +50,8 @@ return async (dispatch) => {
     if (response.data.Response !== "False") {
         let movies = response.data.Search;
         dispatch(fetchFoundMovies(movies));
+    } else {
+        dispatch(errorSearch(movie))
     }
     } catch (error) {
     console.log("Error with finding movie", error);
@@ -60,7 +72,7 @@ const reducer = (state = initialState, action) => {
                     if (nominatesImdbIDs.indexOf(movie.imdbID) !== -1) movie.disableNominate = true
                 })
             }
-            return {...state, foundMovies: fetchedMovies};
+            return {...state, foundMovies: fetchedMovies, isSearchError: false};
         case NOMINATE_MOVIE:
             state.foundMovies.forEach((movie) => {
                 if (movie.imdbID === action.movie.imdbID) movie.disableNominate = true
@@ -76,6 +88,8 @@ const reducer = (state = initialState, action) => {
             })
             }
             return {...state, nominates: newNominates}
+        case SEARCH_ERROR:
+            return {...state, isSearchError: true, searchedTitle: action.movie}
         default:
             return state;
     }

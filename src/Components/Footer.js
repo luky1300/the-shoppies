@@ -4,9 +4,9 @@ import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme) => ({
     bottomPush: {
-        position: "fixed",
         bottom: 0,
         paddingBottom: 10,
+        marginTop: 20
   }
 }));
 

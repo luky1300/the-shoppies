@@ -46,7 +46,7 @@ const errorSearch = (movie) => {
 export const getMovies = (movie) => {
 return async (dispatch) => {
     try {
-    let response = await axios.get(`http://www.omdbapi.com/?apikey=c1268e3b&s=${movie}&type=movie`);
+    let response = await axios.get(`https://www.omdbapi.com/?apikey=c1268e3b&s=${movie}&type=movie`);
     if (response.data.Response !== "False") {
         let movies = response.data.Search;
         dispatch(fetchFoundMovies(movies));
